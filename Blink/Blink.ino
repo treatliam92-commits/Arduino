@@ -26,28 +26,35 @@ Date: 2/13/2026
 */
 
 // the setup function runs once when you press reset or power the board
-int buzzer = 6;  // Pin the piezo is connected to
+int buzzer = 10;   // Speaker on pin 10
+int led1 = 6;      // LED 1
+int led2 = 9;      // LED 2
+int led3 = 11;     // LED 3
 
 void setup() {
-  pinMode(10, OUTPUT);
-  pinMode(9, OUTPUT);
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
   pinMode(buzzer, OUTPUT);
 }
 
-void loop() {
-  digitalWrite(10, HIGH);
-  digitalWrite(9, LOW);
-  delay(250);
-
-  digitalWrite(10, LOW);
-  digitalWrite(9, HIGH);
-  delay(250);
-
-  tone(buzzer, 1000);  // Play 1000 Hz
-  delay(250);
-
-  tone(buzzer, 400);   // Play 400 Hz
-  delay(250);
+void pulseLED(int ledPin, int frequency) {
+  tone(buzzer, frequency);  // Play tone during pulse
+  
+  for (int brightness = 0; brightness <= 255; brightness++) {
+    analogWrite(ledPin, brightness);
+    delay(5);
+  }
+  for (int brightness = 255; brightness >= 0; brightness--) {
+    analogWrite(ledPin, brightness);
+    delay(5);
+  }
 }
 
+void loop() {
 
+  pulseLED(led1, 1000);  // LED 6 with 1000 Hz
+  pulseLED(led2, 700);   // LED 9 with 700 Hz
+  pulseLED(led3, 400);   // LED 11 with 400 Hz
+
+}
